@@ -119,7 +119,7 @@ class ServerProcess extends EventEmitter {
     MCSERVER.log("-------------------------------");
     MCSERVER.log("正在使用虚拟化技术启动进程");
     MCSERVER.log("命令:", startCommandeArray.join(" "));
-    MCSERVER.log("开放端口:", portmap.join("->"));
+    MCSERVER.log("开放端口:", portmap.replace(":", "->"));
     MCSERVER.log("工作目录:", stdCwd);
     MCSERVER.log("-------------------------------");
 
