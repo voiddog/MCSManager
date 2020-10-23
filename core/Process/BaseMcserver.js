@@ -96,23 +96,24 @@ class ServerProcess extends EventEmitter {
     if (agreement.length >= 2 && (agreement[1] === "udp" || agreement[1] === "tcp")) {
       protocol = agreement[1];
     }
-    portmap = portmap.split(":");
-    if (portmap.length > 2) {
-      throw new Error("不支持的多端口操作方法，参数配置端口数量错误。");
-    }
     // 绑定内部暴露端口
     const ExposedPortsObj = {};
     // 绑定内部暴露端口与其对应的宿主机端口
     const PortBindingsObj = {};
-    if (portmap.length == 2) {
-      // 一个端口的配置项目
-      ExposedPortsObj[portmap[0] + "/" + protocol] = {};
-      PortBindingsObj[portmap[0] + "/" + protocol] = [
-        {
+    var portMaps = portmap.split(",");
+    portMaps.forEach(portmap => {
+      portmap = portmap.split(":");
+      if (portmap.length > 2) {
+        throw new Error("不支持的多端口操作方法，参数配置端口数量错误。");
+      }
+      if (portmap.length == 2) {
+        // 一个端口的配置项目
+        ExposedPortsObj[portmap[0] + "/" + protocol] = {};
+        PortBindingsObj[portmap[0] + "/" + protocol] = [{
           HostPort: portmap[1] + ""
-        }
-      ];
-    }
+        }];
+      }
+    });
     // 输出启动消息
     MCSERVER.log("实例 [", this.dataModel.name, "] 正在启动...");
     MCSERVER.log("-------------------------------");
